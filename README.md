@@ -1,51 +1,103 @@
 # Instant Anchor
 
-Privacy-first Chrome extension for dropping persistent anchors anywhere on a webpage, returning to them instantly, attaching notes, organizing anchors by page, and exporting structured research notes.
+A privacy-first Chrome/Edge extension for dropping persistent anchors on webpages, attaching notes, and organizing research across multiple pages without losing your place.
 
-## Highlights
+## Why it exists
 
-- Multiple anchors per page
-- Reliable return across normal and nested scroll containers
-- Persistent per-page notebooks
-- Notes and comments for every anchor
-- SPA navigation support for apps such as ChatGPT
-- Markdown export and JSON backup/import
-- Local-only storage (`chrome.storage.local`)
-- No backend, analytics, telemetry, AI API, or cloud sync
-- Minimal permissions: `activeTab`, `scripting`, `storage`
+Long webpages, documentation, articles, and AI conversations are easy to lose your place in. Instant Anchor lets you drop multiple anchors directly onto a page, jump back instantly, attach notes, and keep separate page workspaces for later.
+
+## Features
+
+- Multiple anchors per webpage
+- Reliable return-to-anchor behavior on normal and nested scrolling layouts
+- Per-anchor titles and notes
+- Persistent multi-page notebook stored locally in Chrome
+- Separate page tabs for different URLs and SPA routes
+- Markdown export for a page or the whole notebook
+- JSON backup and restore
+- Migration support for earlier v0.3.x data
+- No backend, analytics, accounts, AI API, or cloud sync
+
+## Privacy model
+
+Instant Anchor is designed to minimize data exposure.
+
+Permissions:
+
+- `activeTab` — temporary access after you explicitly activate the extension
+- `scripting` — injects the local content script into the active page
+- `storage` — saves anchors and notes in `chrome.storage.local`
+
+The extension has no broad host permissions and contains no network request layer. See [SECURITY.md](SECURITY.md) and [PRIVACY.md](PRIVACY.md).
 
 ## Install from source
 
-1. Clone or download this repository.
-2. Open `chrome://extensions` in Chrome or Chromium.
+1. Download or clone this repository.
+2. Open `chrome://extensions` in Chrome or Edge.
 3. Enable **Developer mode**.
 4. Click **Load unpacked**.
 5. Select the repository folder.
-6. Pin **Instant Anchor Private** to the toolbar.
+6. Pin Instant Anchor to the toolbar.
+7. Activate it on a normal `http://` or `https://` page using the toolbar icon or `Cmd/Ctrl + Shift + Y`.
 
-## How it works
+## Usage
 
-Activate the extension on the current page, drag the anchor control to a point in the page, then use the return control or the notebook panel to jump back later. Each page has its own saved workspace. Notes remain local to the browser profile unless you explicitly export them.
+1. Drag `⌖` onto a point in the page to create an anchor.
+2. Add more anchors anywhere on the page.
+3. Use `↩` to return to the active anchor.
+4. Open the notebook panel to rename anchors and add notes.
+5. Move across pages; each URL keeps its own page tab and anchors.
+6. Export notes as Markdown or back up the complete notebook as JSON.
 
-## Privacy
+## Architecture
 
-Instant Anchor is intentionally local-first. It has no server and performs no network requests. See [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md).
+```text
+Web page
+  │
+  ├─ DOM-aware anchor engine
+  ├─ nested scroll-container detection
+  ├─ multiple marker manager
+  └─ SPA URL watcher
+          │
+          ▼
+chrome.storage.local
+          │
+    ┌─────┼─────┐
+    │     │     │
+  pages anchors notes
+          │
+          ▼
+Markdown / JSON export
+```
+
+## Current release
+
+**v0.4.0** — persistent multi-page notebook, page tabs, SPA navigation handling, Markdown export, and JSON backup/import.
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## Development
 
-Run the static isolation audit:
+Run the static security audit:
 
 ```bash
 ./audit.sh
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/TESTING.md](docs/TESTING.md) for development guidance.
+Run syntax validation:
 
-## Version
+```bash
+node --check background.js
+node --check content.js
+```
 
-Current release: **v0.4.0**
+## Browser support
 
-See [CHANGELOG.md](CHANGELOG.md).
+Built for Chromium-based browsers using Manifest V3. Tested primarily with Chrome.
+
+## Contributing
+
+Bug reports and focused pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## License
 

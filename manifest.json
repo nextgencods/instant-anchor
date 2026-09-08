@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Instant Anchor Private",
+  "version": "0.4.0",
+  "description": "Local-only multi-page anchor notebook with persistent page tabs, anchors and notes.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_title": "Activate Instant Anchor on this page"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "activate-anchor": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Activate Instant Anchor on this page"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

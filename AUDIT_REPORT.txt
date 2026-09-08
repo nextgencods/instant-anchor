@@ -1,0 +1,7 @@
+PASS: No broad host permissions
+PASS: No network primitives
+PASS: No remote/eval code
+PASS: No Chrome sync storage
+PASS: No cookies/history/downloads permissions
+PASS: permissions are activeTab + scripting + local storage
+RESULT: PASS
