@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Instant Anchor Private",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Local-only multi-page anchor notebook with persistent page tabs, anchors and notes.",
   "permissions": [
     "activeTab",

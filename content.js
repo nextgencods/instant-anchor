@@ -664,12 +664,37 @@
     return { left, top, right, bottom };
   }
 
+  function anchorPointIsUnobscured(anchor, rect) {
+    const target = anchor.target || targetFromRange(anchor.pointRange);
+    if (!isUsableTarget(target)) return false;
+
+    // A top-level fixed marker can otherwise appear to "detach" when a sticky,
+    // code/snippet, or other overlapping page surface passes over the real anchor.
+    // Only show the marker while the page content at the anchor point is actually
+    // the anchor target (or one of its descendants/ancestors).
+    const x = Math.max(0, Math.min(window.innerWidth - 1, rect.left));
+    const y = Math.max(0, Math.min(window.innerHeight - 1, rect.top));
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return false;
+
+    let hits = [];
+    try { hits = document.elementsFromPoint(x, y) || []; } catch (_) {}
+    for (const hit of hits) {
+      if (!hit || hit === host || String(hit.id || '').startsWith('instant-anchor-private-marker-')) continue;
+      if (hit === target || target.contains(hit) || hit.contains(target)) return true;
+      // The first real page element is what visually occupies the point. If it is
+      // unrelated to the anchor, the anchor is occluded and its pin must be hidden.
+      return false;
+    }
+    return false;
+  }
+
   function markerIsActuallyVisible(anchor, rect) {
     if (!Number.isFinite(rect.left) || !Number.isFinite(rect.top)) return false;
     const clip = clippingRectFor(anchor.target || targetFromRange(anchor.pointRange));
     const pad = 2;
-    return rect.left >= clip.left - pad && rect.left <= clip.right + pad &&
+    const insideClip = rect.left >= clip.left - pad && rect.left <= clip.right + pad &&
       rect.top >= clip.top - pad && rect.top <= clip.bottom + pad;
+    return insideClip && anchorPointIsUnobscured(anchor, rect);
   }
 
   function anchorRect(anchor) {

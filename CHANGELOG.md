@@ -2,6 +2,12 @@
 
 All notable changes to Instant Anchor are documented here.
 
+## [0.4.1] - 2026-09-09
+
+### Fixed
+- Anchor markers no longer float or appear detached when code blocks, snippet boxes, sticky surfaces, or other overlapping page elements pass over the original anchor point
+- Marker visibility now respects visual occlusion while preserving the saved jump target
+
 ## [0.4.0] - 2026-09-08
 
 ### Added
