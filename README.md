@@ -72,7 +72,7 @@ Markdown / JSON export
 
 ## Current release
 
-**v0.4.0** — persistent multi-page notebook, page tabs, SPA navigation handling, Markdown export, and JSON backup/import.
+**v0.4.1** — marker occlusion fix for code/snippet boxes and overlapping page surfaces, with the v0.4 multi-page notebook features unchanged.
 
 See [CHANGELOG.md](CHANGELOG.md).
 
